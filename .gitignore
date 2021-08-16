@@ -4,5 +4,8 @@
 # IDE
 .idea
 
+# Go
+pkg
+
 # dotenv
 .env
