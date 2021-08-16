@@ -5,6 +5,8 @@ export_dotenv:
 	set -a;
 	source .env;
 	set +a;
+run_local:
+	go run ./cmd/local/main.go
 create_function:
 	gcloud functions deploy $(function_name) \
 		--region asia-northeast1 \
@@ -17,12 +19,12 @@ delete_function:
 	gcloud functions delete $(function_name) \
 		--region asia-northeast1 \
 		--quiet
+delete_deploy:
+	make delete_function;
+	make deploy;
 deploy:
 	gcloud functions deploy $(function_name) \
 		--region asia-northeast1 \
 		--trigger-topic $(trigger_topic_name)
-delete_deploy:
-	make delete_function;
-	make deploy;
 build_zip:
 	zip -r fetch_activities_from_slach_batch.zip .
