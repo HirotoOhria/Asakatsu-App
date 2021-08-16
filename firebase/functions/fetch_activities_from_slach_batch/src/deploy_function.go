@@ -1,4 +1,4 @@
-package deploy_function
+package src
 
 import (
 	"context"
