@@ -9,6 +9,7 @@ run_local:
 	cd ../../src && \
  	go run ./app/fetch_activities_from_slack/main.go && \
  	cd ../cmd/$(cmd_directory_name)
+# CloudFunction をデプロイする場合、go.mod が存在するディレクトリに移動する必要がある
 create_function:
 	make export_dotenv && \
 	cd ../../src && \
@@ -24,6 +25,7 @@ delete_function:
 	gcloud functions delete $(function_name) \
 		--region asia-northeast1 \
 		--quiet
+# CloudFunction をデプロイする場合、go.mod が存在するディレクトリに移動する必要がある
 deploy:
 	cd ../../src && \
 	gcloud functions deploy $(function_name) \
