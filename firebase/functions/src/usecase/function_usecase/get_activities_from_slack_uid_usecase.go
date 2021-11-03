@@ -8,10 +8,12 @@ import (
 	"example.com/asakatsu-app/domain/repository/firestore_repository"
 )
 
+// GetActivitiesFromSlackUidUsecase は、GetActivitiesFromSlackUidFunction のユースケースです。
 type GetActivitiesFromSlackUidUsecase struct {
 	*firestore_repository.ActivityRepository
 }
 
+// NewGetActivitiesFromSlackUidUsecase は、コンストラクタです。
 func NewGetActivitiesFromSlackUidUsecase(
 	activityRepository *firestore_repository.ActivityRepository,
 ) *GetActivitiesFromSlackUidUsecase {
