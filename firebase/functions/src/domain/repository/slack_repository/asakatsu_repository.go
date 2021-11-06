@@ -42,7 +42,7 @@ func (r *AsakatsuRepository) GetYesterdayConversationHistory() ([]slack.Message,
 
 	response, err := r.Api.GetConversationHistory(params)
 	if err != nil {
-		log.Printf("slackApi.GetConversationHistory failed.(err=%+v)", err)
+		log.Printf("slack.Client.GetConversationHistory failed(err=%+v)", err)
 		return nil, err
 	}
 
@@ -60,7 +60,7 @@ func (r *AsakatsuRepository) GetConversationReplies(timestamp string) ([]slack.M
 
 	msgs, _, _, err := r.Api.GetConversationReplies(params)
 	if err != nil {
-		log.Printf("slack GetConversationReplies() failed(err=%+v)", err)
+		log.Printf("slack.Client.GetConversationReplies failed(err=%+v)", err)
 		return nil, err
 	}
 
