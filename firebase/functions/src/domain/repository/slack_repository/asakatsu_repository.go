@@ -29,7 +29,7 @@ func NewAsakatsuRepository(slack *infrastructure.SlackHandler) *AsakatsuReposito
 // 例えば、9月1日に実行した場合、8月31日の00時00分~23時59分までの会話を取得します。
 // see https://api.slack.com/methods/conversations.history
 // see https://pkg.go.dev/github.com/slack-go/slack#Client.GetConversationHistory
-func (r *AsakatsuRepository) GetYesterdayConversationHistory() (*slack.GetConversationHistoryResponse, error) {
+func (r *AsakatsuRepository) GetYesterdayConversationHistory() ([]slack.Message, error) {
 	yesterday := time.Now().Add(-24 * time.Hour)
 	startFetchPeriodDate := time.Date(yesterday.Year(), yesterday.Month(), yesterday.Day(), 0, 0, 0, 0, time.Local)
 	endFetchPeriodDate := startFetchPeriodDate.Add(24 * time.Hour)
@@ -40,7 +40,13 @@ func (r *AsakatsuRepository) GetYesterdayConversationHistory() (*slack.GetConver
 		Latest:    strconv.FormatInt(endFetchPeriodDate.Unix(), 10),
 	}
 
-	return r.Api.GetConversationHistory(params)
+	response, err := r.Api.GetConversationHistory(params)
+	if err != nil {
+		log.Printf("slackApi.GetConversationHistory failed.(err=%+v)", err)
+		return nil, err
+	}
+
+	return response.Messages, nil
 }
 
 // GetConversationReplies は、会話のリプライメッセージを取得します。

@@ -33,15 +33,17 @@ func NewFetchActivitiesFromSlackUsecase(
 func (u *FetchActivitiesFromSlackUsecase) Exec() error {
 	log.Print("run: FetchActivitiesFromSlackUsecase.Exec()")
 
-	response, err := u.AsakatsuRepository.GetYesterdayConversationHistory()
+	yesterdaySlackMsgs, err := u.AsakatsuRepository.GetYesterdayConversationHistory()
 	if err != nil {
 		return fmt.Errorf("AsakatsuRepository.GetYesterdayConversationHistory failed.(err=%+v)", err)
 	}
 
-	startSlackMsgs := slack_domain_object.NewSlackConversation(response.Messages).FindStartSlackMsgs()
+	startSlackMsgs := slack_domain_object.NewSlackConversation(yesterdaySlackMsgs).FindStartSlackMsgs()
 	if startSlackMsgs == nil {
-		fmt.Printf("yesterday's start slack message is zero")
+		fmt.Print("yesterday's start slack message count is zero")
 		return nil
+	} else {
+		fmt.Printf("yesterday's start slack message count is %+v", len(startSlackMsgs))
 	}
 
 	for _, startSlackMsg := range startSlackMsgs {
