@@ -3,7 +3,15 @@
 - [朝活App](#asakatsu-app)
     - [概要](#overview)
 - [構成](#composition)
+    - [インフラ](#infrastructure)
+        - [概要](#infra-overview)
+        - [Cloud Functions](#infra-cloud-functions)
+        - [Cloud Scheculer](#infra-cloud-scheduler)
+        - [Pub/Sub](#infra-pub-sub)
+        - [Firebase Hosting](#infra-firebase-hosting)
+        - [Firestore](#infra-firestore)
     - [バックエンド](#backend)
+        - [概要](#backend-overview)
         - [三層アーキテクチャ](#mvc)
         - [DDD](#ddd)
         - [Clean Architecture](#clean-architecture)
@@ -11,10 +19,12 @@
         - [ローカル用](#composition-local)
         - [その他](#compotion-other)
     - [フロントエンド](#forntend)
+        - [概要](#frontend-overview)
         - [Flux](#flux)
         - [Atomic Design](#atomic-design)
 - [開発](#decelopment)
     - [Firebase Hosting](#firebase-hosting)
+        - [デプロイ](#dev-hosting-deploy)
     - [CloudFunctions](#cloud-functions)
         - [新しい関数の追加](#add-new-function)
             - [Makefire](#makefile)
@@ -47,9 +57,64 @@
 
 ## インフラ
 
+<a id="infra-overview"></a>
+
+### 概要
+
+- インフラにはGCPを採用しています
+
+<a id="infra-cloud-functoins"></a>
+
+### Cloud Functions
+
+- サーバーサイドの関数を配置します
+- サーバーサイドの関数には以下の2種類あります
+    - バッチ
+        - 主に時刻によってトリガーされ、定期実行される関数です
+    - API
+        - 主にHTTPによってトリガーされ、その都度実装される関数です
+
+<a id="infra-cloud-scheduler"></a>
+
+### Cloud Scheduler
+
+- 定期実行の起点となります
+- Pub/Sub のトピックを起動します
+
+<a id="infra-pub-sub"></a>
+
+### Pub/Sub
+
+- Cloud Scheduler により実行されます
+- Cloud Function の関数を実行します
+
+<a id="infra-firebase-hosting"></a>
+
+### FirebasHosting
+
+- フロントエンドをホスティングします
+
+<a id="infra-firestore"></a>
+
+### Firesotre
+
+- DBです
+- 以下のテーブルが存在します
+    - `activities`
+        - 朝活の活動内容の情報を保存します
+    - `users`
+        - 朝活の実践者の情報を保存します
+
 <a id="backend"></a>
 
 ## バックエンド
+
+<a id="badkend-overview"></a>
+
+### 概要
+
+- バックエンドフロントの言語には Go を採用しています
+- バックエンドではフレームワークを採用していません
 
 <a id="mvc"></a>
 
@@ -131,6 +196,12 @@
 
 ## フロンエンド
 
+<a id="frontend-overview"></a>
+
+### 概要
+
+- フロントエンドのフレームワークには Vue を採用しています
+
 <a id="flux"></a>
 
 ### Flux
@@ -151,6 +222,10 @@
 <a id="firebase-hosting"></a>
 
 ## Firebase Hosting
+
+<a id="dev-hosting-deploy"></a>
+
+#### デプロイ
 
 <a id="cloud-functions"></a>
 
@@ -241,7 +316,7 @@ $ make deploy
 
 - 反省しています
     - 正直、プロトタイプ気味の小規模アプリケーションでは手動確認でも十分では
-    - しかし、API が 3つを超えたあたりからテストがないときつくなる気がする
+    - しかし、API が 3つを超えたあた りからテストがないときつくなる気がする
 
 <a id="adopt-clean-architecture"></a>
 
