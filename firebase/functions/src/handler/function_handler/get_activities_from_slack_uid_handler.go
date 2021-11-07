@@ -24,6 +24,7 @@ func NewGetActivitiesFromSlackUidHandler(
 }
 
 // GetActivitiesFromSlackUidHandler は、GetActivitiesFromSlackUidUsecase を実行します。
+// endpoint https://asia-northeast1-asakatsu-app-d6f28.cloudfunctions.net/GetActivitiesFromSlackUidFunction?slack_uid=${slack_uid}
 func (h *GetActivitiesFromSlackUidHandler) Exec(
 	resWiter http.ResponseWriter,
 	req *http.Request,

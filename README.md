@@ -11,6 +11,7 @@
     - [デプロイ](#deploy)
         - [最初のデプロイ](#first-deploy)
         - [2回目以降のデプロイ](#second-deploy)
+- [開発予定](#feature)
 - [振り返り](#look-back)
     - [吾輩はWebアプリケーションである。テストはまだない。](#no-test)
     - [Clean Architecture](#clean-architecture)
@@ -92,6 +93,17 @@ $ cd firebase/functions/cmd/fetch_activities_from_slack
 
 $ make deploy 
 ```
+
+<a id="feature"></a>
+
+# 開発予定
+
+- インフラ
+    - [ ] Docker化
+- フロントエンド
+- バックエンド
+    - [ ] インターフェースの追加
+    - [ ] テストの追加
 
 <a id="look-back"></a>
 
