@@ -36,7 +36,7 @@ func main() {
 		URL: makeUrlForLocal(),
 	}
 
-	output := handler.GetActivitiesFromSlackUidFunction(w, r)
+	output := handler.GetActivitiesFromSlackUidApi(w, r)
 	outputJson, err := json.Marshal(output)
 	if err != nil {
 		log.Fatalf("json.Marshal failed(err=%+v)", err)

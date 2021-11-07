@@ -11,6 +11,9 @@
     - [デプロイ](#deploy)
         - [最初のデプロイ](#first-deploy)
         - [2回目以降のデプロイ](#second-deploy)
+- [振り返り](#look-back)
+    - [吾輩はWebアプリケーションである。テストはまだない。](#no-test)
+    - [Clean Architecture](#clean-architecture)
 
 <a id="asakatsu-app"></a>
 
@@ -89,3 +92,24 @@ $ cd firebase/functions/cmd/fetch_activities_from_slack
 
 $ make deploy 
 ```
+
+<a id="look-back"></a>
+
+# 振り返り
+
+<a id="no-test"></a>
+
+## 吾輩はWebアプリケーションである。テストはまだない。
+
+- 反省しています
+    - 正直、プロトタイプ気味の小規模アプリケーションでは手動確認でも十分では
+    - しかし、API が 3つを超えたあたりからテストがないときつくなる気がする
+
+<a id="clean-architecture"></a>
+
+## Clean Architecture
+
+- どう考えてもオーバースペック
+    - 初期開発がしづらい
+    - 重厚でコードの記述量が増える
+        - 小規模アプリケーションには不向きでは
