@@ -1,7 +1,6 @@
 package function_usecase
 
 import (
-	"fmt"
 	"log"
 
 	"example.com/asakatsu-app/domain/entity/firestore_entity"
@@ -27,7 +26,13 @@ func (u *GetActivitiesFromSlackUidUsecase) Exec(slackUID string) ([]firestore_en
 
 	activityFieldList, err := u.ActivityRepository.GetAllBySlackUID(slackUID)
 	if err != nil {
-		return nil, fmt.Errorf("ActivityRepository.GetAllBySlackUID failed.(err=%+v)", err)
+		log.Printf("ActivityRepository.GetAllBySlackUID failed.(err=%+v)", err)
+		return nil, err
+	}
+	if activityFieldList == nil {
+		log.Print("ActivityRepository.GetAllBySlackUID result count is zero")
+	} else {
+		log.Printf("ActivityRepository.GetAllBySlackUID result count is %+v", len(activityFieldList))
 	}
 
 	return activityFieldList, err

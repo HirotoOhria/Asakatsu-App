@@ -1,7 +1,6 @@
 package batch_usecase
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -35,15 +34,16 @@ func (u *FetchActivitiesFromSlackUsecase) Exec() error {
 
 	yesterdaySlackMsgs, err := u.AsakatsuRepository.GetYesterdayConversationHistory()
 	if err != nil {
-		return fmt.Errorf("AsakatsuRepository.GetYesterdayConversationHistory failed.(err=%+v)", err)
+		log.Printf("AsakatsuRepository.GetYesterdayConversationHistory failed.(err=%+v)", err)
+		return err
 	}
 
 	startSlackMsgs := slack_domain_object.NewSlackConversation(yesterdaySlackMsgs).FindStartSlackMsgs()
 	if startSlackMsgs == nil {
-		fmt.Print("yesterday's start slack message count is zero")
+		log.Print("yesterday's start slack message count is zero")
 		return nil
 	} else {
-		fmt.Printf("yesterday's start slack message count is %+v", len(startSlackMsgs))
+		log.Printf("yesterday's start slack message count is %+v", len(startSlackMsgs))
 	}
 
 	for _, startSlackMsg := range startSlackMsgs {
@@ -61,7 +61,8 @@ func (u *FetchActivitiesFromSlackUsecase) saveActivityFromStartSlackMsg(
 ) error {
 	replyMsgs, err := u.AsakatsuRepository.GetConversationReplies(startSlackMsg.Content.Timestamp)
 	if err != nil {
-		return fmt.Errorf("AsakatsuRepository.GetConversationReplies failed.(err=%+v)", err)
+		log.Printf("AsakatsuRepository.GetConversationReplies failed.(err=%+v)", err)
+		return err
 	}
 
 	var endTime *time.Time
@@ -79,7 +80,8 @@ func (u *FetchActivitiesFromSlackUsecase) saveActivityFromStartSlackMsg(
 	activityDoc := firestore_entity.NewActivityDoc(*startSlackMsg.GetTime(), *activityField)
 
 	if err = u.ActivityRepository.Set(*activityDoc); err != nil {
-		return fmt.Errorf("ActivityRepository.Set failed.(err=%+v)", err)
+		log.Printf("ActivityRepository.Set failed(err=%+v)", err)
+		return err
 	}
 
 	return nil

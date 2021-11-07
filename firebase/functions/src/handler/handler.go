@@ -2,7 +2,6 @@ package handler
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"time"
 
@@ -42,7 +41,7 @@ func FetchActivitiesFromSlackBatch(ctx context.Context) error {
 
 	usecase := injector.InjectFetchActivitiesFromSlackBatchUsecase(ctx)
 	if err := usecase.Exec(); err != nil {
-		fmt.Printf(err.Error())
+		log.Printf("FetchActivitiesFromSlackBatchUsecase.Exec failed(err=%+v)", err)
 		return err
 	}
 
@@ -52,8 +51,10 @@ func FetchActivitiesFromSlackBatch(ctx context.Context) error {
 // GetActivitiesFromSlackUidFunction は、GetActivitiesFromSlackUidFunction を実行します。
 func GetActivitiesFromSlackUidFunction(
 	input *api_io.GetActivitiesFromSlackUidInput,
-) *api_io.GetActivitiesFromSlackUidOutput {
-	log.Print("run: handler.GetActivitiesFromSlackUidUsecase()")
+) (*api_io.GetActivitiesFromSlackUidOutput, error) {
+	// TODO ResponseWriter を返す
+	// TODO 404 レスポンスを返すog.Print("run: handler.GetActivitiesFromSlackUidUsecase()")
+	log.Printf("input: %+v", input)
 
 	ctx := context.Background()
 	firebaseHander := injector.InjectFirebaseHandler(ctx)
@@ -63,9 +64,9 @@ func GetActivitiesFromSlackUidFunction(
 	usecase := injector.InjectGetActivitiesFromSlackUidUsecase(ctx)
 	activityFields, err := usecase.Exec(input.SlackUID)
 	if err != nil {
-		fmt.Printf(err.Error())
-		return nil
+		log.Printf("GetActivitiesFromSlackUidUsecase.Exec failed(err=%+v)", err)
+		return nil, err
 	}
 
-	return api_io.NewGetActivitiesFromSlackUidOutput(activityFields)
+	return api_io.NewGetActivitiesFromSlackUidOutput(activityFields), nil
 }

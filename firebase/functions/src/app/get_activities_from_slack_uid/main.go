@@ -34,14 +34,17 @@ func main() {
 		SlackUID: flag.Arg(0),
 	}
 
-	output := handler.GetActivitiesFromSlackUidFunction(input)
+	output, err := handler.GetActivitiesFromSlackUidFunction(input)
+	if err != nil {
+		log.Fatalf("handler.GetActivitiesFromSlackUidFunction failed(err=%+v)", err)
+	}
 	if output == nil {
-		log.Fatal("handler.GetActivitiesFromSlackUidFunction failed")
+		log.Fatal("handler.GetActivitiesFromSlackUidFunction not found")
 	}
 
 	outputJson, err := json.Marshal(output)
 	if err != nil {
-		log.Fatal("json.Marshal failed")
+		log.Fatalf("json.Marshal failed(err=%+v)", err)
 	}
 
 	fmt.Printf(string(outputJson))

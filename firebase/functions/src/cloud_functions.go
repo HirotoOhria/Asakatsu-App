@@ -26,12 +26,15 @@ func FetchActivitiesFromSlackBatch(ctx context.Context, _ pub_sub_entity.PubSubM
 
 // GetActivitiesFromSlackUidFunction は、CloudFunctionsへデプロイする関数
 // see https://cloud.google.com/functions/docs/calling/http#code_sample
-func GetActivitiesFromSlackUidFunction(w http.ResponseWriter, r *http.Request) {
+func GetActivitiesFromSlackUidFunction(w http.ResponseWriter, _ *http.Request) {
 	input := &api_io.GetActivitiesFromSlackUidInput{
-		SlackUID: "foo",
+		SlackUID: "U01DG785DT4",
 	}
 
-	output := handler.GetActivitiesFromSlackUidFunction(input)
+	output, err := handler.GetActivitiesFromSlackUidFunction(input)
+	if err != nil {
+		log.Fatalf("handler.GetActivitiesFromSlackUidFunction failed(err=%+v)", err)
+	}
 	if output == nil {
 		log.Fatal("handler.GetActivitiesFromSlackUidFunction failed")
 	}

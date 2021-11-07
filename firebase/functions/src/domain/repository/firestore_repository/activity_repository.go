@@ -2,7 +2,7 @@ package firestore_repository
 
 import (
 	"context"
-	"fmt"
+	"log"
 
 	"example.com/asakatsu-app/infrastructure"
 
@@ -39,9 +39,11 @@ func NewActivityRepostitory(
 func (r *ActivityRepository) Get(docID string) (*firestore_entity.ActivityDoc, error) {
 	dataSnap, err := r.collection.Doc(docID).Get(r.ctx)
 	if status.Code(err) == codes.NotFound {
-		return nil, fmt.Errorf("docment is not found.(err=%+v)", err)
+		log.Printf("Activity document is not found(err=%+v", err)
+		return nil, err
 	} else if err != nil {
-		return nil, fmt.Errorf("get dockment failed(err=%+v)", err)
+		log.Printf("Activity document get failed(err=%+v)", err)
+		return nil, err
 	}
 
 	activityDoc := &firestore_entity.ActivityDoc{
@@ -49,7 +51,8 @@ func (r *ActivityRepository) Get(docID string) (*firestore_entity.ActivityDoc, e
 	}
 
 	if err = dataSnap.DataTo(&activityDoc.Field); err != nil {
-		return nil, fmt.Errorf("can not convert to activity doc entity.(err=%+v)", err)
+		log.Printf("Can not convert to activity doc entity.(err=%+v)", err)
+		return nil, err
 	}
 
 	return activityDoc, nil
@@ -65,14 +68,20 @@ func (r *ActivityRepository) GetAllBySlackUID(slackUID string) ([]firestore_enti
 		Documents(r.ctx).
 		GetAll()
 	if err != nil {
-		return nil, fmt.Errorf("can not get documents by slackUID.(err=%+v)", err)
+		log.Printf("Actibities get failed(err=%+v)", err)
+		return nil, err
+	}
+	if len(dataSpans) == 0 {
+		log.Print("ActivityRepository.GetAllBySlackUID result count is zero")
+		return nil, nil
 	}
 
 	var docFieldList []firestore_entity.ActivityField
 	for _, dataSnap := range dataSpans {
 		docFiled := new(firestore_entity.ActivityField)
 		if err = dataSnap.DataTo(docFiled); err != nil {
-			return nil, fmt.Errorf("can not convert to activity field entity.(err=%+v)", err)
+			log.Printf("Can not convert to activity field entity(err=%+v)", err)
+			return nil, err
 		}
 
 		docFieldList = append(docFieldList, *docFiled)
@@ -85,7 +94,8 @@ func (r *ActivityRepository) GetAllBySlackUID(slackUID string) ([]firestore_enti
 // see https://pkg.go.dev/cloud.google.com/go/firestore#DocumentRef.Set
 func (r *ActivityRepository) Set(activityDoc firestore_entity.ActivityDoc) error {
 	if _, err := r.collection.Doc(activityDoc.ID).Set(r.ctx, activityDoc.Field); err != nil {
-		return fmt.Errorf("can not set activity doc to firestore.(err=%+v)", err)
+		log.Printf("Can not set activity doc to firestore.(err=%+v)", err)
+		return err
 	}
 
 	return nil
