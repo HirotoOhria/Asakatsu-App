@@ -1,4 +1,4 @@
-package infrastructure
+package client
 
 import (
 	"context"

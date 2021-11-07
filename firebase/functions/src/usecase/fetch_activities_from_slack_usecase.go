@@ -1,4 +1,4 @@
-package batch_usecase
+package usecase
 
 import (
 	"log"

@@ -6,17 +6,17 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/slack-go/slack"
+	"example.com/asakatsu-app/infrastructure/client"
 
-	"example.com/asakatsu-app/infrastructure"
+	"github.com/slack-go/slack"
 )
 
 type AsakatsuRepository struct {
 	channelID string
-	*infrastructure.SlackHandler
+	*client.SlackHandler
 }
 
-func NewAsakatsuRepository(slack *infrastructure.SlackHandler) *AsakatsuRepository {
+func NewAsakatsuRepository(slack *client.SlackHandler) *AsakatsuRepository {
 	channelID := os.Getenv("SLACK_ASAKATSU_CHANNEL_ID")
 
 	return &AsakatsuRepository{

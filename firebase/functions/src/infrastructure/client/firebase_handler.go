@@ -1,4 +1,4 @@
-package infrastructure
+package client
 
 import (
 	"context"
@@ -11,7 +11,7 @@ type FirebaseHandler struct {
 	*firebase.App
 }
 
-func NewFirebaseHandlerr(ctx context.Context) *FirebaseHandler {
+func NewFirebaseHandler(ctx context.Context) *FirebaseHandler {
 	asakatsuAppProjectID := os.Getenv("GCP_PROJECT_ID")
 
 	// Use the application default credentials

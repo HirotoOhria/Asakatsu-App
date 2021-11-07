@@ -1,9 +1,10 @@
-package function_usecase
+package usecase
 
 import (
 	"log"
 
-	"example.com/asakatsu-app/domain/entity/firestore_entity"
+	"example.com/asakatsu-app/domain/api_io"
+
 	"example.com/asakatsu-app/domain/repository/firestore_repository"
 )
 
@@ -21,7 +22,7 @@ func NewGetActivitiesFromSlackUidUsecase(
 	}
 }
 
-func (u *GetActivitiesFromSlackUidUsecase) Exec(slackUID string) ([]firestore_entity.ActivityField, error) {
+func (u *GetActivitiesFromSlackUidUsecase) Exec(slackUID string) (*api_io.GetActivitiesFromSlackUidOutput, error) {
 	log.Print("run: GetActivitiesFromSlackUidUsecase.Exec()")
 
 	activityFieldList, err := u.ActivityRepository.GetAllBySlackUID(slackUID)
@@ -35,5 +36,5 @@ func (u *GetActivitiesFromSlackUidUsecase) Exec(slackUID string) ([]firestore_en
 		log.Printf("ActivityRepository.GetAllBySlackUID result count is %+v", len(activityFieldList))
 	}
 
-	return activityFieldList, err
+	return api_io.NewGetActivitiesFromSlackUidOutput(activityFieldList), err
 }

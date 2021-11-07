@@ -3,14 +3,13 @@ package injector
 import (
 	"context"
 
-	"example.com/asakatsu-app/usecase/batch_usecase"
-	"example.com/asakatsu-app/usecase/function_usecase"
+	"example.com/asakatsu-app/usecase"
 )
 
 func InjectFetchActivitiesFromSlackBatchUsecase(
 	ctx context.Context,
-) *batch_usecase.FetchActivitiesFromSlackUsecase {
-	return batch_usecase.NewFetchActivitiesFromSlackUsecase(
+) *usecase.FetchActivitiesFromSlackUsecase {
+	return usecase.NewFetchActivitiesFromSlackUsecase(
 		InjectAsakatsuRepository(),
 		InjectActivityRepostiroy(ctx),
 	)
@@ -18,6 +17,6 @@ func InjectFetchActivitiesFromSlackBatchUsecase(
 
 func InjectGetActivitiesFromSlackUidUsecase(
 	ctx context.Context,
-) *function_usecase.GetActivitiesFromSlackUidUsecase {
-	return function_usecase.NewGetActivitiesFromSlackUidUsecase(InjectActivityRepostiroy(ctx))
+) *usecase.GetActivitiesFromSlackUidUsecase {
+	return usecase.NewGetActivitiesFromSlackUidUsecase(InjectActivityRepostiroy(ctx))
 }

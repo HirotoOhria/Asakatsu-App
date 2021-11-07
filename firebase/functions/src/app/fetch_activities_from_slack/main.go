@@ -28,6 +28,6 @@ func main() {
 	ctx := context.Background()
 
 	if err := handler.FetchActivitiesFromSlackBatch(ctx); err != nil {
-		log.Fatalf("handler.FetchActivitiesFromSlackBatch failed.(err=%+v)", err)
+		log.Fatalf("handler.FetchActivitiesFromSlackBatch failed(err=%+v)", err)
 	}
 }

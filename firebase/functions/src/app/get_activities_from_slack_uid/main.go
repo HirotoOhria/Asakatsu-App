@@ -5,10 +5,12 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net/http"
+	"net/http/httptest"
+	"net/url"
 
 	"github.com/joho/godotenv"
 
-	"example.com/asakatsu-app/domain/api_io"
 	"example.com/asakatsu-app/handler"
 )
 
@@ -29,23 +31,32 @@ func initDotenv() {
 func main() {
 	log.Print("run: main.main()")
 
-	flag.Parse()
-	input := &api_io.GetActivitiesFromSlackUidInput{
-		SlackUID: flag.Arg(0),
+	w := httptest.NewRecorder()
+	r := &http.Request{
+		URL: makeUrlForLocal(),
 	}
 
-	output, err := handler.GetActivitiesFromSlackUidFunction(input)
-	if err != nil {
-		log.Fatalf("handler.GetActivitiesFromSlackUidFunction failed(err=%+v)", err)
-	}
-	if output == nil {
-		log.Fatal("handler.GetActivitiesFromSlackUidFunction not found")
-	}
-
+	output := handler.GetActivitiesFromSlackUidFunction(w, r)
 	outputJson, err := json.Marshal(output)
 	if err != nil {
 		log.Fatalf("json.Marshal failed(err=%+v)", err)
 	}
 
-	fmt.Printf(string(outputJson))
+	fmt.Print(string(outputJson))
+}
+
+// makeUrlForLocal は、ローカル実行用のURLを生成します
+func makeUrlForLocal() *url.URL {
+	urlForLocal, err := url.Parse("https://example.com/?slack_uid=" + getSlackUidByArg())
+	if err != nil {
+		log.Fatalf("url.Parse failed(err=%+v)", err)
+	}
+
+	return urlForLocal
+}
+
+// getSlackUidByArg は、go run コマンドの第一引数からSlakcUidを取得します
+func getSlackUidByArg() string {
+	flag.Parse()
+	return flag.Arg(0)
 }

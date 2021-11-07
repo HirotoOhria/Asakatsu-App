@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"example.com/asakatsu-app/infrastructure"
+	"example.com/asakatsu-app/infrastructure/client"
 
 	"cloud.google.com/go/firestore"
 	"google.golang.org/grpc/codes"
@@ -25,7 +25,7 @@ type ActivityRepository struct {
 // ActivityRepository は、コンストラクタです。
 func NewActivityRepostitory(
 	ctx context.Context,
-	firestoreHandler *infrastructure.FirestoreHandler,
+	firestoreHandler *client.FirestoreHandler,
 ) *ActivityRepository {
 	return &ActivityRepository{
 		ctx:        ctx,
