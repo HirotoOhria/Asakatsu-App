@@ -35,7 +35,7 @@ deploy:
 	cd ../cmd/$(cmd_directory_name)
 delete_deploy:
 	make delete_function;
-	make deploy;
+	make create_function;
 build_zip:
 	cd ../../src && \
 	zip -r fetch_activities_from_slach_batch.zip . && \
